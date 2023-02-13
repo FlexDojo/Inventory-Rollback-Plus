@@ -1,19 +1,11 @@
 package me.danjono.inventoryrollback.gui;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import com.nuclyon.technicallycoded.inventoryrollback.InventoryRollbackPlus;
 import com.nuclyon.technicallycoded.inventoryrollback.nms.EnumNmsVersion;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import me.danjono.inventoryrollback.config.MessageData;
+import me.danjono.inventoryrollback.data.LogType;
+import me.danjono.inventoryrollback.reflections.NBTWrapper;
+import org.bukkit.*;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemFlag;
@@ -22,10 +14,12 @@ import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import me.danjono.inventoryrollback.config.MessageData;
-import me.danjono.inventoryrollback.data.LogType;
-import me.danjono.inventoryrollback.inventory.RestoreInventory;
-import me.danjono.inventoryrollback.reflections.NBTWrapper;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Buttons {
 
@@ -53,16 +47,6 @@ public class Buttons {
     private static final Material teleport = Material.ENDER_PEARL;
 
     private static final Material enderChest = Material.ENDER_CHEST;
-
-    private static final Material health =
-            InventoryRollbackPlus.getInstance().getVersion().isAtLeast(EnumNmsVersion.v1_13_R1) ?
-                    Material.MELON_SLICE : Material.getMaterial("MELON");
-
-    private static final Material hunger = Material.ROTTEN_FLESH;
-
-    private static final Material experience =
-            InventoryRollbackPlus.getInstance().getVersion().isAtLeast(EnumNmsVersion.v1_13_R1) ?
-                    Material.EXPERIENCE_BOTTLE : Material.getMaterial("EXP_BOTTLE");
 
     private static final Material restoreAllInventory = Material.NETHER_STAR;
 
@@ -107,18 +91,6 @@ public class Buttons {
 
     public static Material getEnderChestIcon() {
         return enderChest;
-    }
-
-    public static Material getHealthIcon() {
-        return health;
-    }
-
-    public static Material getHungerIcon() {
-        return hunger;
-    }
-
-    public static Material getExperienceIcon() {
-        return experience;
     }
 
     public static Material getRestoreAllInventoryIcon() {
@@ -361,7 +333,7 @@ public class Buttons {
             meta.setLore(lore);
         }
         
-        meta.setDisplayName(ChatColor.RED + "Deaths");
+        meta.setDisplayName(ChatColor.RED + "Morti");
 
         item.setItemMeta(meta);
 
@@ -383,7 +355,7 @@ public class Buttons {
             meta.setLore(lore);
         }
         
-        meta.setDisplayName(ChatColor.GREEN + "Joins");
+        meta.setDisplayName(ChatColor.GREEN + "Connessione");
 
         item.setItemMeta(meta);
 
@@ -405,7 +377,7 @@ public class Buttons {
             meta.setLore(lore);
         }
         
-        meta.setDisplayName(ChatColor.GOLD + "Quits");
+        meta.setDisplayName(ChatColor.GOLD + "Disconnessione");
 
         item.setItemMeta(meta);
 
@@ -427,7 +399,7 @@ public class Buttons {
             meta.setLore(lore);
         }
         
-        meta.setDisplayName(ChatColor.LIGHT_PURPLE + "World Changes");
+        meta.setDisplayName(ChatColor.LIGHT_PURPLE + "Cambio Mondo");
 
         item.setItemMeta(meta);
 
@@ -449,7 +421,7 @@ public class Buttons {
             meta.setLore(lore);
         }
         
-        meta.setDisplayName(ChatColor.AQUA + "Force Saves");
+        meta.setDisplayName(ChatColor.AQUA + "Automatico");
 
         item.setItemMeta(meta);
 
@@ -535,7 +507,7 @@ public class Buttons {
 
             meta.setLore(lore);
         } else {
-            lore.add(ChatColor.WHITE + "No location saved");
+            lore.add(ChatColor.WHITE + "Nessuna posizione");
         }
 
         item.setItemMeta(meta);
@@ -560,7 +532,7 @@ public class Buttons {
         List<String> lore = new ArrayList<>();
 
         if (enderChest.length > 1)
-            lore.add(ChatColor.WHITE + "Items in Ender Chest");
+            lore.add(ChatColor.WHITE + "Oggetti in EnderChest");
         else {
             lore.add(ChatColor.WHITE + "Empty");
         }
@@ -573,68 +545,6 @@ public class Buttons {
         nbt.setString("uuid", uuid.toString());
         nbt.setString("logType", logType.name());
         nbt.setLong("timestamp", timestamp);
-        item = nbt.setItemData();
-
-        return item;
-    }
-
-    public ItemStack healthButton(LogType logType, Double health) {    	
-        ItemStack item = new ItemStack(getHealthIcon());
-
-        ItemMeta meta = item.getItemMeta();
-        assert meta != null;
-        meta.setDisplayName(MessageData.getHealthRestoreButton());
-
-        item.setItemMeta(meta);
-
-        NBTWrapper nbt = new NBTWrapper(item);
-
-        nbt.setString("uuid", uuid.toString());
-        nbt.setString("logType", logType.name());
-        nbt.setDouble("health", health);
-        item = nbt.setItemData();
-
-        return item;
-    }
-
-    public ItemStack hungerButton(LogType logType, int hunger, float saturation) {    	
-        ItemStack item = new ItemStack(getHungerIcon());
-
-        ItemMeta meta = item.getItemMeta();
-        assert meta != null;
-        meta.setDisplayName(MessageData.getHungerRestoreButton());
-
-        item.setItemMeta(meta);
-
-        NBTWrapper nbt = new NBTWrapper(item);
-
-        nbt.setString("uuid", uuid.toString());
-        nbt.setString("logType", logType.name());
-        nbt.setInt("hunger", hunger);
-        nbt.setFloat("saturation", saturation);
-        item = nbt.setItemData();
-
-        return item;
-    }
-
-    public ItemStack experiencePotion(LogType logType, float xp) {    	
-        ItemStack item = new ItemStack(getExperienceIcon());
-
-        ItemMeta meta = item.getItemMeta();
-        assert meta != null;
-        meta.setDisplayName(MessageData.getExperienceRestoreButton());
-
-        List<String> lore = new ArrayList<>();
-        lore.add(MessageData.getExperienceRestoreLevel((int) RestoreInventory.getLevel(xp)));
-        meta.setLore(lore);
-
-        item.setItemMeta(meta);
-
-        NBTWrapper nbt = new NBTWrapper(item);
-
-        nbt.setString("uuid", uuid.toString());
-        nbt.setString("logType", logType.name());
-        nbt.setFloat("xp", xp);
         item = nbt.setItemData();
 
         return item;

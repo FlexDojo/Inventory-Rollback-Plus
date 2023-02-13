@@ -1,5 +1,14 @@
 package me.danjono.inventoryrollback.data;
 
+import com.nuclyon.technicallycoded.inventoryrollback.InventoryRollbackPlus;
+import me.danjono.inventoryrollback.InventoryRollback;
+import me.danjono.inventoryrollback.config.ConfigData;
+import me.danjono.inventoryrollback.config.ConfigData.SaveType;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,16 +16,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
-import com.nuclyon.technicallycoded.inventoryrollback.InventoryRollbackPlus;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
-
-import me.danjono.inventoryrollback.InventoryRollback;
-import me.danjono.inventoryrollback.config.ConfigData;
-import me.danjono.inventoryrollback.config.ConfigData.SaveType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerData {
 
@@ -164,37 +163,6 @@ public class PlayerData {
         }
     }
 
-    public void setXP(float xp) {
-        if (ConfigData.getSaveType() == SaveType.YAML) {
-            yaml.setXP(xp);
-        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
-            mysql.setXP(xp);
-        }
-    }
-
-    public void setHealth(double health) {
-        if (ConfigData.getSaveType() == SaveType.YAML) {
-            yaml.setHealth(health);
-        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
-            mysql.setHealth(health);
-        }
-    }
-
-    public void setFoodLevel(int foodLevel) {
-        if (ConfigData.getSaveType() == SaveType.YAML) {
-            yaml.setFoodLevel(foodLevel);
-        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
-            mysql.setFoodLevel(foodLevel);
-        }
-    }
-
-    public void setSaturation(float saturation) {
-        if (ConfigData.getSaveType() == SaveType.YAML) {
-            yaml.setSaturation(saturation);
-        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
-            mysql.setSaturation(saturation);
-        }
-    }
 
     public void setWorld(String world) {
         if (ConfigData.getSaveType() == SaveType.YAML) {
@@ -314,45 +282,6 @@ public class PlayerData {
         return items;
     }
 
-    public float getXP() {
-        if (ConfigData.getSaveType() == SaveType.YAML) {
-            return yaml.getXP();
-        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
-            return mysql.getXP();
-        }
-
-        return 0;
-    }
-
-    public double getHealth() {
-        if (ConfigData.getSaveType() == SaveType.YAML) {
-            return yaml.getHealth();
-        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
-            return mysql.getHealth();
-        }
-
-        return 0;
-    }
-
-    public int getFoodLevel() {
-        if (ConfigData.getSaveType() == SaveType.YAML) {
-            return yaml.getFoodLevel();
-        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
-            return mysql.getFoodLevel();
-        }
-
-        return 0;
-    }
-
-    public float getSaturation() {
-        if (ConfigData.getSaveType() == SaveType.YAML) {
-            return yaml.getSaturation();
-        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
-            return mysql.getSaturation();
-        }
-
-        return 0;
-    }
 
     public String getWorld() {
         if (ConfigData.getSaveType() == SaveType.YAML) {

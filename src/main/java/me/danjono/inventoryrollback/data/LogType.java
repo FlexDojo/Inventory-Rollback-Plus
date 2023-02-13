@@ -6,5 +6,6 @@ public enum LogType {
     DEATH,
     WORLD_CHANGE,
     FORCE,
-    UNKNOWN;
+    UNKNOWN,
+    TIMER;
 }

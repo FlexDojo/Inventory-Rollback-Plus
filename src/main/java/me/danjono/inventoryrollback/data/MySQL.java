@@ -1,26 +1,20 @@
 package me.danjono.inventoryrollback.data;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-
 import com.nuclyon.technicallycoded.inventoryrollback.InventoryRollbackPlus;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.inventory.ItemStack;
-
 import me.danjono.inventoryrollback.InventoryRollback;
 import me.danjono.inventoryrollback.config.ConfigData;
 import me.danjono.inventoryrollback.config.MessageData;
 import me.danjono.inventoryrollback.gui.InventoryName;
 import me.danjono.inventoryrollback.inventory.RestoreInventory;
 import me.danjono.inventoryrollback.inventory.SaveInventory;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.inventory.ItemStack;
+
+import java.io.File;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class MySQL {
 
@@ -51,10 +45,6 @@ public class MySQL {
     private String mainInventory;
     private String armour;
     private String enderChest;
-    private float xp;
-    private double health;
-    private int hunger;
-    private float saturation;
     private String world;
     private double x;
     private double y;
@@ -107,11 +97,7 @@ public class MySQL {
                         "`id` INT NOT NULL AUTO_INCREMENT," +
                         "`uuid` VARCHAR(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL," +
                         "`timestamp` DOUBLE NOT NULL," +
-                        "`xp` FLOAT NOT NULL," + 
-                        "`health` DOUBLE NOT NULL," + 
-                        "`hunger` INT NOT NULL," + 
-                        "`saturation` FLOAT NOT NULL," + 
-                        "`location_world` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL," + 
+                        "`location_world` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL," +
                         "`location_x` DOUBLE NOT NULL," + 
                         "`location_y` DOUBLE NOT NULL," + 
                         "`location_z` DOUBLE NOT NULL," + 
@@ -244,21 +230,6 @@ public class MySQL {
         this.enderChest = SaveInventory.toBase64(items);
     }
 
-    public void setXP(float xp) {
-        this.xp = xp;
-    }
-
-    public void setHealth(double health) {
-        this.health = health;
-    }
-
-    public void setFoodLevel(int foodLevel) {
-        this.hunger = foodLevel;
-    }
-
-    public void setSaturation(float saturation) {
-        this.saturation = saturation;
-    }
 
     public void setWorld(String world) {
         this.world = world;
@@ -329,10 +300,6 @@ public class MySQL {
                     armour = results.getString("armour");
                     enderChest = results.getString("ender_chest");
                     
-                    xp = results.getFloat("xp");
-                    health = results.getDouble("health");
-                    hunger = results.getInt("hunger");
-                    saturation = results.getFloat("saturation");
                     world = results.getString("location_world");
                     x = results.getDouble("location_x");
                     y = results.getDouble("location_y");
@@ -357,22 +324,6 @@ public class MySQL {
 
     public ItemStack[] getEnderChest() {
         return RestoreInventory.getInventoryItems(packageVersion, enderChest);
-    }
-
-    public float getXP() {
-        return this.xp;
-    }
-
-    public double getHealth() {
-        return this.health;
-    }
-
-    public int getFoodLevel() {
-        return this.hunger;
-    }
-
-    public float getSaturation() {
-        return this.saturation;
     }
 
     public String getWorld() {
@@ -404,25 +355,21 @@ public class MySQL {
 
         try {
             String update = "INSERT INTO " + backupTable.getTableName() + " " +
-                    "(uuid, timestamp, xp, health, hunger, saturation, location_world, location_x, location_y, location_z, version, death_reason, main_inventory, armour, ender_chest)" + " " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "(uuid, timestamp, location_world, location_x, location_y, location_z, version, death_reason, main_inventory, armour, ender_chest)" + " " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             try (PreparedStatement statement = connection.prepareStatement(update)) {
                 statement.setString(1, uuid + "");
                 statement.setLong(2, timestamp);
-                statement.setFloat(3, xp);
-                statement.setDouble(4, health);
-                statement.setInt(5, hunger);
-                statement.setFloat(6, saturation);
-                statement.setString(7, world);
-                statement.setDouble(8, x);
-                statement.setDouble(9, y);
-                statement.setDouble(10, z);
-                statement.setString(11, packageVersion);
-                statement.setString(12, deathReason);
-                statement.setString(13, mainInventory);
-                statement.setString(14, armour);
-                statement.setString(15, enderChest);
+                statement.setString(3, world);
+                statement.setDouble(4, x);
+                statement.setDouble(5, y);
+                statement.setDouble(6, z);
+                statement.setString(7, packageVersion);
+                statement.setString(8, deathReason);
+                statement.setString(9, mainInventory);
+                statement.setString(10, armour);
+                statement.setString(11, enderChest);
                 statement.executeUpdate();
             }
         } finally {
@@ -478,10 +425,6 @@ public class MySQL {
                     mysql.setMainInventory(yaml.getMainInventory());
                     mysql.setArmour(yaml.getArmour());
                     mysql.setEnderChest(yaml.getEnderChest());
-                    mysql.setXP(yaml.getXP());
-                    mysql.setHealth(yaml.getHealth());
-                    mysql.setFoodLevel(yaml.getFoodLevel());
-                    mysql.setSaturation(yaml.getSaturation());
                     mysql.setWorld(yaml.getWorld());
                     mysql.setX(yaml.getX());
                     mysql.setY(yaml.getY());

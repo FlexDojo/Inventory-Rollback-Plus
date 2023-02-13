@@ -21,6 +21,10 @@ public class ConfigData {
         generateConfigFile();
     }
 
+    public static long getSaveInterval() {
+        return InventoryRollback.getInstance().getConfigData().configuration.getLong("saveInterval", 20);
+    }
+
     private void generateConfigFile() {
         getConfigurationFile();
         if(!configurationFile.exists()) {

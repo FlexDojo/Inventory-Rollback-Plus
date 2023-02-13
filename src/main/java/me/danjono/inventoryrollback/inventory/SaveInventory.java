@@ -11,7 +11,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
@@ -71,10 +70,6 @@ public class SaveInventory {
                 }
             }
 
-        float totalXp = getTotalExperience(player);
-        double health = player.getHealth();
-        int foodLevel = player.getFoodLevel();
-        float saturation = player.getSaturation();
         String worldName = player.getWorld().getName();
 
         // Location data
@@ -98,10 +93,6 @@ public class SaveInventory {
             if (finalMainInvArmor != null) data.setArmour(finalMainInvArmor);
             if (finalEnderInvContents != null) data.setEnderChest(finalEnderInvContents);
 
-            data.setXP(totalXp);
-            data.setHealth(health);
-            data.setFoodLevel(foodLevel);
-            data.setSaturation(saturation);
             data.setWorld(worldName);
 
             data.setX(locX);

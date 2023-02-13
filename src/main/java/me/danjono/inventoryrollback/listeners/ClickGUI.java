@@ -12,7 +12,6 @@ import me.danjono.inventoryrollback.data.PlayerData;
 import me.danjono.inventoryrollback.gui.Buttons;
 import me.danjono.inventoryrollback.gui.InventoryName;
 import me.danjono.inventoryrollback.gui.menu.*;
-import me.danjono.inventoryrollback.inventory.RestoreInventory;
 import me.danjono.inventoryrollback.reflections.NBTWrapper;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -418,38 +417,6 @@ public class ClickGUI implements Listener {
                 }.runTaskAsynchronously(this.main);
             }
 
-            // Clicked icon to restore backup players health
-            else if (icon.getType().equals(Buttons.getHealthIcon())) {
-                // Perm check
-                if (!staff.hasPermission("inventoryrollbackplus.restore")) {
-                    staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getNoPermission());
-                    return;
-                }
-
-                if (offlinePlayer.isOnline()) {
-                    Player player = (Player) offlinePlayer;	
-                    double health = nbt.getDouble("health");
-
-                    player.setHealth(health);
-
-                    if (SoundData.isFoodRestoredEnabled())
-                        player.playSound(player.getLocation(), SoundData.getFoodRestored(), 1, 1);
-
-                    player.sendMessage(MessageData.getPluginPrefix() + MessageData.getHealthRestoredPlayer(staff.getName()));
-                    if (!staff.getUniqueId().equals(player.getUniqueId()))
-                        staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getHealthRestored(player.getName()));
-                } else {
-                    staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getHealthNotOnline(offlinePlayer.getName()));
-                }
-            } 
-
-            //Clicked icon to restore backup players hunger
-            else if (icon.getType().equals(Buttons.getHungerIcon())) {
-                // Perm check
-                if (!staff.hasPermission("inventoryrollbackplus.restore")) {
-                    staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getNoPermission());
-                    return;
-                }
 
                 if (offlinePlayer.isOnline()) {
                     Player player = (Player) offlinePlayer;	
@@ -459,64 +426,9 @@ public class ClickGUI implements Listener {
                     player.setFoodLevel(hunger);
                     player.setSaturation(saturation);
 
-                    if (SoundData.isHungerRestoredEnabled())
-                        player.playSound(player.getLocation(), SoundData.getHungerRestored(), 1, 1);
-
-                    player.sendMessage(MessageData.getPluginPrefix() + MessageData.getHungerRestoredPlayer(staff.getName()));
-                    if (!staff.getUniqueId().equals(player.getUniqueId()))
-                        staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getHungerRestored(player.getName()));
-                } else {
-                    staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getHungerNotOnline(offlinePlayer.getName()));
                 }
             } 
 
-            //Clicked icon to restore backup players experience
-            else if (icon.getType().equals(Buttons.getExperienceIcon())) {
-                // Perm check
-                if (!staff.hasPermission("inventoryrollbackplus.restore")) {
-                    staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getNoPermission());
-                    return;
-                }
-
-                if (offlinePlayer.isOnline()) {				
-                    Player player = (Player) offlinePlayer;	
-                    Float xp = nbt.getFloat("xp");
-
-                    RestoreInventory.setTotalExperience(player, xp);
-
-                    if (SoundData.isExperienceRestoredEnabled())
-                        player.playSound(player.getLocation(), SoundData.getExperienceSound(), 1, 1);
-
-                    player.sendMessage(MessageData.getPluginPrefix() + MessageData.getExperienceRestoredPlayer(staff.getName(), xp.intValue()));
-                    if (!staff.getUniqueId().equals(player.getUniqueId()))
-                        staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getExperienceRestored(player.getName(), (int) RestoreInventory.getLevel(xp)));
-                } else {				    
-                    staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getExperienceNotOnlinePlayer(offlinePlayer.getName()));
-                }
-            }
-        } else {
-            int slotIndex = e.getRawSlot();
-            int topInvSize = e.getView().getTopInventory().getSize();
-            boolean clickIsWithinPlayerInventory = slotIndex >= topInvSize;
-
-            boolean clickIsWithinMainBackupInv = slotIndex < topInvSize - 18;
-            boolean notInLastLine = slotIndex < topInvSize - 9;
-            boolean notBeforeArmorSlots = slotIndex > topInvSize - 15;
-
-            boolean clickIsWithinArmorOrOffHandSlots = notInLastLine && notBeforeArmorSlots;
-            boolean isValidBackupMenuInteraction = clickIsWithinMainBackupInv || clickIsWithinArmorOrOffHandSlots;
-
-            //Allow items to be grabbed in the top inventory except the bottom line AND NOT player inventory items to be shift clicked to top inventory
-            if (clickIsWithinPlayerInventory && !e.isShiftClick()) {
-                e.setCancelled(false);
-            } else if (isValidBackupMenuInteraction) {
-                if (staff.hasPermission("inventoryrollbackplus.restore")) {
-                    e.setCancelled(false);
-                } else {
-                    staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getNoPermission());
-                }
-            }
-        }
     }
 
     private void enderChestBackupMenu(InventoryClickEvent e, Player staff, ItemStack icon) {

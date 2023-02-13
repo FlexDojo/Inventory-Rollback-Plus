@@ -25,15 +25,15 @@ public class HelpSubCmd extends IRPCommand {
 
     public void sendHelp(CommandSender sender) {
         sender.sendMessage(
-                MessageData.getPluginPrefix() + ChatColor.GRAY + "InventoryRollbackPlus - by TechnicallyCoded\n" +
-                        ChatColor.WHITE + "  Available Commands:\n" +
-                        ChatColor.WHITE + "    /irp restore [player]" + ChatColor.GRAY + " - Open rollback GUI for optional [player]\n" +
-                        ChatColor.WHITE + "    /irp forcebackup <all/player> [player]" + ChatColor.GRAY + " - Create a forced save of a player's inventory\n" +
-                        ChatColor.WHITE + "    /irp enable" + ChatColor.GRAY + " - Enable the plugin\n" +
-                        ChatColor.WHITE + "    /irp disable" + ChatColor.GRAY + " - Disable the plugin\n" +
-                        ChatColor.WHITE + "    /irp reload" + ChatColor.GRAY + " - Reload the plugin\n" +
-                        ChatColor.WHITE + "    /irp help" + ChatColor.GRAY + " - Get this message\n" +
-                        ChatColor.WHITE + "    /irp version" + ChatColor.GRAY + " - Get plugin info & version\n");
+                MessageData.getPluginPrefix() + ChatColor.AQUA + "by TechnicallyCoded & Villag3r_\n" +
+                        ChatColor.GOLD + "  Comandi disponibili:\n" +
+                        ChatColor.GOLD + "    /irp restore [player]" + ChatColor.GRAY + " - Apre i backups di [player]\n" +
+                        ChatColor.GOLD + "    /irp forcebackup <all/player> [player]" + ChatColor.GRAY + " - Salva forzatamente un backup\n" +
+                        ChatColor.GOLD + "    /irp enable" + ChatColor.GRAY + " - Abilita il plugin\n" +
+                        ChatColor.GOLD + "    /irp disable" + ChatColor.GRAY + " - Disabilita il plugin\n" +
+                        ChatColor.GOLD + "    /irp reload" + ChatColor.GRAY + " - Reloadda il plugin\n" +
+                        ChatColor.GOLD + "    /irp help" + ChatColor.GRAY + " - Apre questo pannello\n" +
+                        ChatColor.GOLD + "    /irp version" + ChatColor.GRAY + " - Mostra info sulla versione\n");
     }
 
 }

@@ -1,8 +1,7 @@
 package com.nuclyon.technicallycoded.inventoryrollback;
 
-import com.nuclyon.technicallycoded.inventoryrollback.commands.Commands;
 import com.nuclyon.technicallycoded.inventoryrollback.UpdateChecker.UpdateResult;
-
+import com.nuclyon.technicallycoded.inventoryrollback.commands.Commands;
 import com.nuclyon.technicallycoded.inventoryrollback.nms.EnumNmsVersion;
 import com.nuclyon.technicallycoded.inventoryrollback.util.TimeZoneUtil;
 import io.papermc.lib.PaperLib;
@@ -34,6 +33,7 @@ public class InventoryRollbackPlus extends InventoryRollback {
     private EnumNmsVersion version = EnumNmsVersion.v1_13_R1;
 
     private AtomicBoolean shuttingDown = new AtomicBoolean(false);
+    private long startTime = System.currentTimeMillis();;
 
     public static InventoryRollbackPlus getInstance() {
         return instancePlus;
@@ -229,4 +229,5 @@ public class InventoryRollbackPlus extends InventoryRollback {
     public TimeZoneUtil getTimeZoneUtil() {
         return this.timeZoneUtil;
     }
+
 }

@@ -1,7 +1,6 @@
 package me.danjono.inventoryrollback.data;
 
 import com.nuclyon.technicallycoded.inventoryrollback.InventoryRollbackPlus;
-import me.danjono.inventoryrollback.InventoryRollback;
 import me.danjono.inventoryrollback.config.ConfigData;
 import me.danjono.inventoryrollback.config.MessageData;
 import me.danjono.inventoryrollback.gui.InventoryName;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class YAML {
 
@@ -33,10 +31,6 @@ public class YAML {
     private String mainInventory;
     private String armour;
     private String enderChest;
-    private float xp;
-    private double health;
-    private int hunger;
-    private float saturation;
     private String world;
     private double x;
     private double y;
@@ -226,22 +220,6 @@ public class YAML {
         this.enderChest = SaveInventory.toBase64(items);
     }
 
-    public void setXP(float xp) {
-        this.xp = xp;
-    }
-
-    public void setHealth(double health) {
-        this.health = health;
-    }
-
-    public void setFoodLevel(int foodLevel) {
-        this.hunger = foodLevel;
-    }
-
-    public void setSaturation(float saturation) {
-        this.saturation = saturation;
-    }
-
     public void setWorld(String world) {
         this.world = world;
     }
@@ -285,22 +263,6 @@ public class YAML {
         return RestoreInventory.getInventoryItems(getVersion(), base64);
     }
 
-    public float getXP() {
-        return Float.parseFloat(data.getString("xp"));
-    }
-
-    public double getHealth() {
-        return data.getDouble("health");
-    }
-
-    public int getFoodLevel() {
-        return data.getInt("hunger");
-    }
-
-    public float getSaturation() {
-        return Float.parseFloat(data.getString("saturation"));
-    }
-
     public String getWorld() {
         return data.getString("location.world");
     }
@@ -341,10 +303,6 @@ public class YAML {
         data.set("inventory", mainInventory);
         data.set("armour", armour);
         data.set("enderchest", enderChest);
-        data.set("xp", xp);
-        data.set("health", health);
-        data.set("hunger", hunger);
-        data.set("saturation", saturation);
         data.set("location.world", world);
         data.set("location.x", x);
         data.set("location.y", y);
@@ -422,10 +380,6 @@ public class YAML {
                         yaml.setMainInventory(RestoreInventory.getInventoryItems(packageVersion, data.getString("data." + timestamp + ".inventory")));
                         yaml.setArmour(RestoreInventory.getInventoryItems(packageVersion, data.getString("data." + timestamp + ".armour")));
                         yaml.setEnderChest(RestoreInventory.getInventoryItems(packageVersion, data.getString("data." + timestamp + ".enderchest")));                    
-                        yaml.setXP(Float.parseFloat(data.getString("data." + timestamp + ".xp")));
-                        yaml.setHealth(data.getDouble("data." + timestamp + ".health"));
-                        yaml.setFoodLevel(data.getInt("data." + timestamp + ".hunger"));
-                        yaml.setSaturation(Float.parseFloat(data.getString("data." + timestamp + ".saturation")));
                         yaml.setWorld(data.getString("data." + timestamp + ".location.world"));
                         yaml.setX(data.getDouble("data." + timestamp + ".location.x"));
                         yaml.setY(data.getDouble("data." + timestamp + ".location.y"));

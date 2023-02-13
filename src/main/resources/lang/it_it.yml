@@ -1,0 +1,65 @@
+# Original messages by https://github.com/danjono & https://github.com/TechnicallyCoded
+general:
+  prefix: '&f[&bInventoryRollbackPlus&f]&r '
+
+commands:
+  no-permission: '&cNon hai il permesos!'
+  error: '&cComando invalido.'
+  enable: '&2The plugin has been enabled.'
+  disable: '&2The plugin has been disabled.'
+  reload: '&2The plugin has been reloaded successfully.'
+  player-only: '&cCommand can only be run by a player.'
+  import: '&aSuccessfully imported all backup data from the old plugin.'
+
+backup:
+  no-backup: 'Non c''è nessun backup per %NAME%.'
+  not-online: '%NAME% non è attualmente online.'
+  force-saved-player: 'L''inventario di %NAME% è stato salvato forzatamente.'
+  force-saved-all: 'Tutti gli inventari dei giocatori online sono stati salvati forzatamente.'
+  not-forced-saved: 'Si è riscontrato un errore nel salvare l''inventario di %NAME%'
+
+attribute-restore:
+  main-inventory:
+    restored: 'L''inventario principale di %NAME% è stato ripristinato.'
+    restored-player: 'Il tuo inventario è stato ripristinato da %NAME% da un backup.'
+    not-online: 'Non puoi ripristinare l''inventario di %NAME% mentre è offline.'
+    button-name: '&cSovrascrivi l''inventario da backup'
+    button-disabled: '&cIl restore one-click è disabilitato\n&cda config!'
+  ender-chest:
+    restored: 'L''enderchest di %NAME% è stata ripristinata.'
+    restored-player: 'La tua enderchest è stato ripristinato da %NAME% da un backup.'
+    not-online: 'Non puoi ripristinare l''enderchest di %NAME% mentre è offline.'
+    button-name: '&dSoovrascrivi l''enderchest da backup'
+  health:
+    restored: 'La salute di %NAME% è stata ripristinata.'
+    restored-player: 'La tua salute è stata ripristinata da %NAME% da un backup.'
+    not-online: 'Non puoi ripristinare la salute di %NAME% mentre è offline.'
+    button-name: '&cRipristina salute'
+  hunger:
+    restored: 'La fame di %NAME% è stata ripristinata.'
+    restored-player: 'La tua fame è stata ripristinata da %NAME% da un backup.'
+    not-online: 'Non puoi ripristinare la fame di %NAME% mentre è offline.'
+    button-name: '&cRipristina fame'
+  experience:
+    restored: 'L''esperienza di %NAME% è stata ripristinata.'
+    restored-player: 'La tua esperienza è stata ripristinata da %NAME% da un backup.'
+    not-online: 'Non puoi ripristinare l''esperienza di %NAME% mentre è offline.'
+    button-name: '&cRipristina esperienza'
+    button-lore: '&rLevel %XP%'
+
+death-location:
+  world: '&6Mondo: &f%WORLD%'
+  x: '&6X: &f%X%'
+  y: '&6Y: &f%Y%'
+  z: '&6Z: &f%Z%'
+  reason: '&6Motivo decesso: &f%REASON%'
+  time: '&6Orario: &f%TIME%'
+  teleport-to: '&3Teletrasportati'
+  teleport: 'Sei stato teletrasportato a %LOCATION%'
+  invalid-world: 'Il mondo %WORLD% non è correntemente caricato nel server.'
+
+menu-buttons:
+  main-menu: '&fMenu principale'
+  next-page: '&fPagina successiva'
+  previous-page: '&fPagina precedente'
+  back-page: '&fIndietro'

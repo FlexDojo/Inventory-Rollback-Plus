@@ -1,15 +1,14 @@
 package me.danjono.inventoryrollback.config;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-
+import me.danjono.inventoryrollback.InventoryRollback;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import me.danjono.inventoryrollback.InventoryRollback;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
 
 public class MessageData {
 
@@ -89,25 +88,6 @@ public class MessageData {
     private static String enderChestNotOnline;
     private static String enderChestButton;
 
-    // Health GUI messages
-    private static String healthRestored;
-    private static String healthRestoredPlayer;
-    private static String healthNotOnline;
-    private static String healthButton;
-
-    // Hunger GUI messages
-    private static String hungerRestored;
-    private static String hungerRestoredPlayer;
-    private static String hungerNotOnline;
-    private static String hungerButton;
-
-    // XP GUI messages
-    private static String experienceRestored;
-    private static String experienceRestoredPlayer;
-    private static String experienceNotOnline;
-    private static String experienceButton;
-    private static String experienceButtonLore;
-
     // Death logs messages
     private static String deathLocationWorld;
     private static String deathLocationX;
@@ -159,25 +139,6 @@ public class MessageData {
         setEnderChestNotOnline(convertColorCodes((String) getDefaultValue("attribute-restore.ender-chest.not-online", "You can't restore %NAME%'s ender chest while they are offline.")));
         setEnderChestButton(convertColorCodes((String) getDefaultValue("attribute-restore.ender-chest.button-name", "&dRestore Ender Chest")));
 
-        // HP gui
-        setHealthRestored(convertColorCodes((String) getDefaultValue("attribute-restore.health.restored", "%NAME%'s health has been restored.")));
-        setHealthRestoredPlayer(convertColorCodes((String) getDefaultValue("attribute-restore.health.restored-player", "Your health has been restored by %NAME%.")));
-        setHealthNotOnline(convertColorCodes((String) getDefaultValue("attribute-restore.health.not-online", "You can't restore %NAME%'s health while they are offline.")));
-        setHealthButton(convertColorCodes((String) getDefaultValue("attribute-restore.health.button-name", "&aRestore Health")));
-
-        // Hunger gui
-        setHungerRestored(convertColorCodes((String) getDefaultValue("attribute-restore.hunger.restored", "%NAME%'s hunger has been restored.")));
-        setHungerRestoredPlayer(convertColorCodes((String) getDefaultValue("attribute-restore.hunger.restored-player", "Your hunger has been restored by %NAME%.")));
-        setHungerNotOnline(convertColorCodes((String) getDefaultValue("attribute-restore.hunger.not-online", "You can't restore %NAME%'s hunger while they are offline.")));
-        setHungerButton(convertColorCodes((String) getDefaultValue("attribute-restore.hunger.button-name", "&cRestore Food")));
-
-        // XP gui
-        setExperienceRestored(convertColorCodes((String) getDefaultValue("attribute-restore.experience.restored", "%NAME%'s XP has been set to level %XP%.")));
-        setExperienceRestoredPlayer(convertColorCodes((String) getDefaultValue("attribute-restore.experience.restored-player", "Your XP has been restored to level %XP% by %NAME%.")));
-        setExperienceNotOnlinePlayer(convertColorCodes((String) getDefaultValue("attribute-restore.experience.not-online", "You can't restore %NAME%'s experience while they are offline.")));
-        setExperienceButton(convertColorCodes((String) getDefaultValue("attribute-restore.experience.button-name", "&2Restore Player XP")));
-        setExperienceButtonLore(convertColorCodes((String) getDefaultValue("attribute-restore.experience.button-lore", "&rLevel %XP%")));
-
         // Death only gui
         setDeathLocationWorld(convertColorCodes((String) getDefaultValue("death-location.world", "&6World: &f%WORLD%")));
         setDeathLocationX(convertColorCodes((String) getDefaultValue("death-location.x", "&6X: &f%X%")));
@@ -200,7 +161,6 @@ public class MessageData {
     }
 
     private static String nameVariable = "%NAME%";
-    private static String xpVariable = "%XP%";
 
     public static void setPluginPrefix(String message) {
         pluginPrefix = message;
@@ -292,58 +252,6 @@ public class MessageData {
     
     public static void setEnderChestButton(String message) {
         enderChestButton = message;
-    }
-
-    public static void setHealthRestored(String message) {
-        healthRestored = message;
-    }
-
-    public static void setHealthRestoredPlayer(String message) {
-        healthRestoredPlayer = message;
-    }
-
-    public static void setHealthNotOnline(String message) {
-        healthNotOnline = message;
-    }
-    
-    public static void setHealthButton(String message) {
-        healthButton = message;
-    }
-
-    public static void setHungerRestored(String message) {
-        hungerRestored = message;
-    }
-
-    public static void setHungerRestoredPlayer(String message) {
-        hungerRestoredPlayer = message;
-    }
-
-    public static void setHungerNotOnline(String message) {
-        hungerNotOnline = message;
-    }
-    
-    public static void setHungerButton(String message) {
-        hungerButton = message;
-    }
-
-    public static void setExperienceRestored(String message) {
-        experienceRestored = message;
-    }
-
-    public static void setExperienceRestoredPlayer(String message) {
-        experienceRestoredPlayer = message;
-    }
-
-    public static void setExperienceNotOnlinePlayer(String message) {
-        experienceNotOnline = message;
-    }
-    
-    public static void setExperienceButton(String message) {
-        experienceButton = message;
-    }
-
-    public static void setExperienceButtonLore(String message) {
-        experienceButtonLore = message;
     }
 
     public static void setDeathLocationWorld(String message) {
@@ -496,58 +404,6 @@ public class MessageData {
     
     public static String getEnderChestRestoreButton() {
         return enderChestButton;
-    }
-
-    public static String getHealthRestored(String name) {
-        return healthRestored.replaceAll(nameVariable, name);
-    }
-
-    public static String getHealthRestoredPlayer(String name) {
-        return healthRestoredPlayer.replaceAll(nameVariable, name);
-    }
-
-    public static String getHealthNotOnline(String name) {
-        return healthNotOnline.replaceAll(nameVariable, name);
-    }
-    
-    public static String getHealthRestoreButton() {
-        return healthButton;
-    }
-
-    public static String getHungerRestored(String name) {
-        return hungerRestored.replaceAll(nameVariable, name);
-    }
-
-    public static String getHungerRestoredPlayer(String name) {
-        return hungerRestoredPlayer.replaceAll(nameVariable, name);
-    }
-
-    public static String getHungerNotOnline(String name) {
-        return hungerNotOnline.replaceAll(nameVariable, name);
-    }
-    
-    public static String getHungerRestoreButton() {
-        return hungerButton;
-    }
-
-    public static String getExperienceRestored(String name, int xp) {
-        return experienceRestored.replaceAll(nameVariable, name).replaceAll(xpVariable, xp + "");
-    }
-
-    public static String getExperienceRestoredPlayer(String name, int xp) {
-        return experienceRestoredPlayer.replaceAll(nameVariable, name).replaceAll(xpVariable, xp + "");
-    }
-
-    public static String getExperienceNotOnlinePlayer(String name) {
-        return experienceNotOnline.replaceAll(nameVariable, name);
-    }
-    
-    public static String getExperienceRestoreButton() {
-        return experienceButton;
-    }
-    
-    public static String getExperienceRestoreLevel(int xp) {
-        return experienceButtonLore.replaceAll(xpVariable, xp + "");
     }
 
     public static String getDeathLocationWorld(String world) {

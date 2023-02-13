@@ -29,10 +29,6 @@ public class MainInventoryBackupMenu {
 	private final ItemStack[] armour;
 	private final ItemStack[] enderChest;
 	private final String location;
-	private final double health;
-	private final int hunger;
-	private final float saturation;
-	private final float xp;
 	
     private final Buttons buttons;
     private Inventory inventory;
@@ -48,10 +44,6 @@ public class MainInventoryBackupMenu {
 		this.armour = data.getArmour();
 	    this.enderChest = data.getEnderChest();
 		this.location = location;
-		this.health = data.getHealth();
-		this.hunger = data.getFoodLevel();
-		this.saturation = data.getSaturation();
-		this.xp = data.getXP();
 		
 		this.buttons = new Buttons(playerUUID);
 		
@@ -164,15 +156,7 @@ public class MainInventoryBackupMenu {
 		
 		//Add Enderchest icon	
 		inventory.setItem(50, buttons.enderChestButton(logType, timestamp, enderChest));
-		
-		//Add health icon
-		inventory.setItem(51, buttons.healthButton(logType, health));
-		
-		//Add hunger icon
-		inventory.setItem(52, buttons.hungerButton(logType, hunger, saturation));
-		
-		//Add Experience Bottle			
-		inventory.setItem(53, buttons.experiencePotion(logType, xp));
+
 	}
 		
 }

@@ -5,7 +5,6 @@ import me.danjono.inventoryrollback.config.ConfigData;
 import me.danjono.inventoryrollback.config.MessageData;
 import me.danjono.inventoryrollback.data.LogType;
 import me.danjono.inventoryrollback.data.PlayerData;
-import me.danjono.inventoryrollback.data.YAML;
 import me.danjono.inventoryrollback.inventory.RestoreInventory;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
@@ -150,12 +149,6 @@ public class BackupConversionUtil {
                         oldBackupDataConfig.getString("data." + timestamp + ".armour"));
                 ItemStack[] enderChestItems = RestoreInventory.getInventoryItems(packageVersion,
                         oldBackupDataConfig.getString("data." + timestamp + ".enderchest"));
-                float xp = Float.parseFloat(
-                        oldBackupDataConfig.getString("data." + timestamp + ".xp"));
-                double health = oldBackupDataConfig.getDouble("data." + timestamp + ".health");
-                int foodLevel = oldBackupDataConfig.getInt("data." + timestamp + ".hunger");
-                float saturation = Float.parseFloat(
-                        oldBackupDataConfig.getString("data." + timestamp + ".saturation"));
                 String worldName = oldBackupDataConfig.getString("data." + timestamp + ".location.world");
                 double posX = oldBackupDataConfig.getDouble("data." + timestamp + ".location.x");
                 double posY = oldBackupDataConfig.getDouble("data." + timestamp + ".location.y");
@@ -170,10 +163,6 @@ public class BackupConversionUtil {
                 importedData.setMainInventory(mainInvItems);
                 importedData.setArmour(armorItems);
                 importedData.setEnderChest(enderChestItems);
-                importedData.setXP(xp);
-                importedData.setHealth(health);
-                importedData.setFoodLevel(foodLevel);
-                importedData.setSaturation(saturation);
                 importedData.setWorld(worldName);
                 importedData.setX(posX);
                 importedData.setY(posY);
