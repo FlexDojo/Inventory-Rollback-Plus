@@ -73,7 +73,7 @@ public class EnderChestBackupMenu {
         // How many pages are required
         int pagesRequired = Math.max(1, (int) Math.ceil(itemsToDisplay / (double) spaceAvailable));
 
-        //Check if pageNumber supplied is greater then pagesRequired, if true set to last page
+        //Check if pageNumber supplied is greater than pagesRequired, if true set to last page
         if (pageNumber > pagesRequired) {
             pageNumber = pagesRequired;
         } else if (pageNumber <= 0) {

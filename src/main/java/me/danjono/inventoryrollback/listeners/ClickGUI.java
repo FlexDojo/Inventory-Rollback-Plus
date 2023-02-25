@@ -43,8 +43,8 @@ public class ClickGUI implements Listener {
     public void onInventoryDrag(InventoryDragEvent e) {
         //Cancel listener if the event is not for an EpicFishing GUI menu
         String title = e.getView().getTitle();
-        if (!title.equals(InventoryName.MAIN_MENU.getName()) 
-                && !title.equals(InventoryName.PLAYER_MENU.getName()) 
+        if (!title.equals(InventoryName.MAIN_MENU.getName())
+                && !title.equals(InventoryName.PLAYER_MENU.getName())
                 && !title.equalsIgnoreCase(InventoryName.ROLLBACK_LIST.getName())
                 && !title.equalsIgnoreCase(InventoryName.MAIN_BACKUP.getName())
                 && !title.equalsIgnoreCase(InventoryName.ENDER_CHEST_BACKUP.getName()))
@@ -58,7 +58,7 @@ public class ClickGUI implements Listener {
             return;
         }
 
-        for (Integer slot : e.getRawSlots()) {            
+        for (Integer slot : e.getRawSlots()) {
             if (slot < e.getInventory().getSize()) {
                 return;
             }
@@ -68,12 +68,11 @@ public class ClickGUI implements Listener {
     }
 
 
-
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         String title = e.getView().getTitle();
-        if (!title.equals(InventoryName.MAIN_MENU.getName()) 
-                && !title.equals(InventoryName.PLAYER_MENU.getName()) 
+        if (!title.equals(InventoryName.MAIN_MENU.getName())
+                && !title.equals(InventoryName.PLAYER_MENU.getName())
                 && !title.equalsIgnoreCase(InventoryName.ROLLBACK_LIST.getName())
                 && !title.equalsIgnoreCase(InventoryName.MAIN_BACKUP.getName())
                 && !title.equalsIgnoreCase(InventoryName.ENDER_CHEST_BACKUP.getName()))
@@ -91,36 +90,34 @@ public class ClickGUI implements Listener {
 
         //Listener for player menu
         if (title.equals(InventoryName.MAIN_MENU.getName())) {
-            mainMenu(e,staff, icon);
+            mainMenu(e, staff, icon);
         }
 
         //Listener for player menu
         else if (title.equals(InventoryName.PLAYER_MENU.getName())) {
-            playerMenu(e,staff, icon);
+            playerMenu(e, staff, icon);
         }
 
         //Listener for rollback list menu
         else if (title.equals(InventoryName.ROLLBACK_LIST.getName())) {
-            rollbackMenu(e,staff, icon);
+            rollbackMenu(e, staff, icon);
         }
 
         //Listener for main inventory backup menu
         else if (title.equals(InventoryName.MAIN_BACKUP.getName())) {
-            mainBackupMenu(e,staff, icon);
+            mainBackupMenu(e, staff, icon);
         }
 
         //Listener for enderchest backup menu
         else if (title.equals(InventoryName.ENDER_CHEST_BACKUP.getName())) {
-            enderChestBackupMenu(e,staff, icon);
-        }
-
-        else {
+            enderChestBackupMenu(e, staff, icon);
+        } else {
             e.setCancelled(true);
         }
     }
 
     private void mainMenu(InventoryClickEvent e, Player staff, ItemStack icon) {
-        if ((e.getRawSlot() >= 0 && e.getRawSlot() < InventoryName.MAIN_MENU.getSize())) {                
+        if ((e.getRawSlot() >= 0 && e.getRawSlot() < InventoryName.MAIN_MENU.getSize())) {
             NBTWrapper nbt = new NBTWrapper(icon);
             if (!nbt.hasUUID())
                 return;
@@ -134,7 +131,7 @@ public class ClickGUI implements Listener {
 
                 staff.openInventory(menu.getInventory());
                 Bukkit.getScheduler().runTaskAsynchronously(InventoryRollback.getInstance(), menu::getMainMenu);
-            } 
+            }
             //Clicked a player head
             else {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(nbt.getString("uuid")));
@@ -155,7 +152,7 @@ public class ClickGUI implements Listener {
         if (icon == null)
             return;
 
-        if ((e.getRawSlot() >= 0 && e.getRawSlot() < InventoryName.PLAYER_MENU.getSize())) {				
+        if ((e.getRawSlot() >= 0 && e.getRawSlot() < InventoryName.PLAYER_MENU.getSize())) {
             NBTWrapper nbt = new NBTWrapper(icon);
             if (!nbt.hasUUID())
                 return;
@@ -229,7 +226,7 @@ public class ClickGUI implements Listener {
                         }
                     }
                 }.runTaskAsynchronously(main);
-            } 
+            }
 
             //Player has selected a page icon
             else if (icon.getType().equals(Buttons.getPageSelectorIcon())) {
@@ -249,7 +246,7 @@ public class ClickGUI implements Listener {
                     staff.openInventory(menu.getInventory());
                     Bukkit.getScheduler().runTaskAsynchronously(InventoryRollback.getInstance(), menu::showBackups);
                 }
-            }	
+            }
         } else {
             if (e.getRawSlot() >= e.getInventory().getSize() && !e.isShiftClick()) {
                 e.setCancelled(false);
@@ -266,7 +263,7 @@ public class ClickGUI implements Listener {
             if (!nbt.hasUUID())
                 return;
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(nbt.getString("uuid")));            
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(nbt.getString("uuid")));
             LogType logType = LogType.valueOf(nbt.getString("logType"));
             Long timestamp = nbt.getLong("timestamp");
 
@@ -309,26 +306,44 @@ public class ClickGUI implements Listener {
 
                             // Place inventory items sync (compressed code)
                             Future<Void> futureSetInv = main.getServer().getScheduler().callSyncMethod(main,
-                                    () -> { player.getInventory().setContents(inventory); return null; });
-                            try { futureSetInv.get(); }
-                            catch (ExecutionException | InterruptedException ex) { ex.printStackTrace(); }
+                                    () -> {
+                                        player.getInventory().setContents(inventory);
+                                        return null;
+                                    });
+                            try {
+                                futureSetInv.get();
+                            } catch (ExecutionException | InterruptedException ex) {
+                                ex.printStackTrace();
+                            }
 
                             // If 1.8, place armor contents separately
                             if (main.getVersion().isNoHigherThan(EnumNmsVersion.v1_8_R3)) {
                                 // Place items sync (compressed code)
                                 Future<Void> futureSetArmor = main.getServer().getScheduler().callSyncMethod(main,
-                                        () -> { player.getInventory().setArmorContents(armour); return null; });
-                                try { futureSetArmor.get(); }
-                                catch (ExecutionException | InterruptedException ex) { ex.printStackTrace(); }
+                                        () -> {
+                                            player.getInventory().setArmorContents(armour);
+                                            return null;
+                                        });
+                                try {
+                                    futureSetArmor.get();
+                                } catch (ExecutionException | InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
                             }
 
                             // Play sound effect is enabled
                             if (SoundData.isInventoryRestoreEnabled()) {
                                 // Play sound sync (compressed code)
                                 Future<Void> futurePlaySound = main.getServer().getScheduler().callSyncMethod(main,
-                                        () -> { player.playSound(player.getLocation(), SoundData.getInventoryRestored(), 1, 1); return null; });
-                                try { futurePlaySound.get(); }
-                                catch (ExecutionException | InterruptedException ex) { ex.printStackTrace(); }
+                                        () -> {
+                                            player.playSound(player.getLocation(), SoundData.getInventoryRestored(), 1, 1);
+                                            return null;
+                                        });
+                                try {
+                                    futurePlaySound.get();
+                                } catch (ExecutionException | InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
                             }
 
                             // Send player & staff feedback
@@ -351,7 +366,7 @@ public class ClickGUI implements Listener {
                     return;
                 }
 
-                String[] location = nbt.getString("location").split(",");			
+                String[] location = nbt.getString("location").split(",");
                 World world = Bukkit.getWorld(location[0]);
 
                 if (world == null) {
@@ -360,23 +375,23 @@ public class ClickGUI implements Listener {
                     return;
                 }
 
-                Location loc = new Location(world, 
-                        Math.floor(Double.parseDouble(location[1])), 
-                        Math.floor(Double.parseDouble(location[2])), 
+                Location loc = new Location(world,
+                        Math.floor(Double.parseDouble(location[1])),
+                        Math.floor(Double.parseDouble(location[2])),
                         Math.floor(Double.parseDouble(location[3])))
-                        .add(0.5, 0.5, 0.5);				
+                        .add(0.5, 0.5, 0.5);
 
                 // Teleport player on a slight delay to block the teleport icon glitching out into the player inventory
                 Bukkit.getScheduler().runTaskLater(InventoryRollback.getInstance(), () -> {
                     e.getWhoClicked().closeInventory();
-                    PaperLib.teleportAsync(staff,loc).thenAccept((result) -> {
+                    PaperLib.teleportAsync(staff, loc).thenAccept((result) -> {
                         if (SoundData.isTeleportEnabled())
                             staff.playSound(loc, SoundData.getTeleport(), 1, 1);
 
                         staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getDeathLocationTeleport(loc));
                     });
                 }, 1L);
-            } 
+            }
 
             // Clicked icon to restore backup players ender chest
             else if (icon.getType().equals(Buttons.getEnderChestIcon())) {
@@ -417,18 +432,29 @@ public class ClickGUI implements Listener {
                 }.runTaskAsynchronously(this.main);
             }
 
+        } else {
+            int slotIndex = e.getRawSlot();
+            int topInvSize = e.getView().getTopInventory().getSize();
+            boolean clickIsWithinPlayerInventory = slotIndex >= topInvSize;
 
-                if (offlinePlayer.isOnline()) {
-                    Player player = (Player) offlinePlayer;	
-                    int hunger = nbt.getInt("hunger");
-                    Float saturation = nbt.getFloat("saturation");
+            boolean clickIsWithinMainBackupInv = slotIndex < topInvSize - 18;
+            boolean notInLastLine = slotIndex < topInvSize - 9;
+            boolean notBeforeArmorSlots = slotIndex > topInvSize - 15;
 
-                    player.setFoodLevel(hunger);
-                    player.setSaturation(saturation);
+            boolean clickIsWithinArmorOrOffHandSlots = notInLastLine && notBeforeArmorSlots;
+            boolean isValidBackupMenuInteraction = clickIsWithinMainBackupInv || clickIsWithinArmorOrOffHandSlots;
 
+            //Allow items to be grabbed in the top inventory except the bottom line AND NOT player inventory items to be shift clicked to top inventory
+            if (clickIsWithinPlayerInventory && !e.isShiftClick()) {
+                e.setCancelled(false);
+            } else if (isValidBackupMenuInteraction) {
+                if (staff.hasPermission("inventoryrollbackplus.restore")) {
+                    e.setCancelled(false);
+                } else {
+                    staff.sendMessage(MessageData.getPluginPrefix() + MessageData.getNoPermission());
                 }
-            } 
-
+            }
+        }
     }
 
     private void enderChestBackupMenu(InventoryClickEvent e, Player staff, ItemStack icon) {
@@ -572,7 +598,7 @@ public class ClickGUI implements Listener {
                     }.runTaskAsynchronously(main);
 
                     if (SoundData.isInventoryRestoreEnabled())
-                        player.playSound(player.getLocation(), SoundData.getInventoryRestored(), 1, 1); 
+                        player.playSound(player.getLocation(), SoundData.getInventoryRestored(), 1, 1);
 
                     player.sendMessage(MessageData.getPluginPrefix() + MessageData.getEnderChestRestoredPlayer(staff.getName()));
                     if (!staff.getUniqueId().equals(player.getUniqueId()))
