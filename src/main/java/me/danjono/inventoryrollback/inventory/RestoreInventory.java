@@ -80,4 +80,4 @@ public class RestoreInventory {
 
         return stacks;
     }
-    }
+}

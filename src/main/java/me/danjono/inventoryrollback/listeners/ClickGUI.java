@@ -12,6 +12,7 @@ import me.danjono.inventoryrollback.data.PlayerData;
 import me.danjono.inventoryrollback.gui.Buttons;
 import me.danjono.inventoryrollback.gui.InventoryName;
 import me.danjono.inventoryrollback.gui.menu.*;
+import me.danjono.inventoryrollback.inventory.RestoreInventory;
 import me.danjono.inventoryrollback.reflections.NBTWrapper;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -68,6 +69,7 @@ public class ClickGUI implements Listener {
     }
 
 
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         String title = e.getView().getTitle();
@@ -90,28 +92,30 @@ public class ClickGUI implements Listener {
 
         //Listener for player menu
         if (title.equals(InventoryName.MAIN_MENU.getName())) {
-            mainMenu(e, staff, icon);
+            mainMenu(e,staff, icon);
         }
 
         //Listener for player menu
         else if (title.equals(InventoryName.PLAYER_MENU.getName())) {
-            playerMenu(e, staff, icon);
+            playerMenu(e,staff, icon);
         }
 
         //Listener for rollback list menu
         else if (title.equals(InventoryName.ROLLBACK_LIST.getName())) {
-            rollbackMenu(e, staff, icon);
+            rollbackMenu(e,staff, icon);
         }
 
         //Listener for main inventory backup menu
         else if (title.equals(InventoryName.MAIN_BACKUP.getName())) {
-            mainBackupMenu(e, staff, icon);
+            mainBackupMenu(e,staff, icon);
         }
 
         //Listener for enderchest backup menu
         else if (title.equals(InventoryName.ENDER_CHEST_BACKUP.getName())) {
-            enderChestBackupMenu(e, staff, icon);
-        } else {
+            enderChestBackupMenu(e,staff, icon);
+        }
+
+        else {
             e.setCancelled(true);
         }
     }
@@ -306,44 +310,26 @@ public class ClickGUI implements Listener {
 
                             // Place inventory items sync (compressed code)
                             Future<Void> futureSetInv = main.getServer().getScheduler().callSyncMethod(main,
-                                    () -> {
-                                        player.getInventory().setContents(inventory);
-                                        return null;
-                                    });
-                            try {
-                                futureSetInv.get();
-                            } catch (ExecutionException | InterruptedException ex) {
-                                ex.printStackTrace();
-                            }
+                                    () -> { player.getInventory().setContents(inventory); return null; });
+                            try { futureSetInv.get(); }
+                            catch (ExecutionException | InterruptedException ex) { ex.printStackTrace(); }
 
                             // If 1.8, place armor contents separately
                             if (main.getVersion().isNoHigherThan(EnumNmsVersion.v1_8_R3)) {
                                 // Place items sync (compressed code)
                                 Future<Void> futureSetArmor = main.getServer().getScheduler().callSyncMethod(main,
-                                        () -> {
-                                            player.getInventory().setArmorContents(armour);
-                                            return null;
-                                        });
-                                try {
-                                    futureSetArmor.get();
-                                } catch (ExecutionException | InterruptedException ex) {
-                                    ex.printStackTrace();
-                                }
+                                        () -> { player.getInventory().setArmorContents(armour); return null; });
+                                try { futureSetArmor.get(); }
+                                catch (ExecutionException | InterruptedException ex) { ex.printStackTrace(); }
                             }
 
                             // Play sound effect is enabled
                             if (SoundData.isInventoryRestoreEnabled()) {
                                 // Play sound sync (compressed code)
                                 Future<Void> futurePlaySound = main.getServer().getScheduler().callSyncMethod(main,
-                                        () -> {
-                                            player.playSound(player.getLocation(), SoundData.getInventoryRestored(), 1, 1);
-                                            return null;
-                                        });
-                                try {
-                                    futurePlaySound.get();
-                                } catch (ExecutionException | InterruptedException ex) {
-                                    ex.printStackTrace();
-                                }
+                                        () -> { player.playSound(player.getLocation(), SoundData.getInventoryRestored(), 1, 1); return null; });
+                                try { futurePlaySound.get(); }
+                                catch (ExecutionException | InterruptedException ex) { ex.printStackTrace(); }
                             }
 
                             // Send player & staff feedback
@@ -384,7 +370,7 @@ public class ClickGUI implements Listener {
                 // Teleport player on a slight delay to block the teleport icon glitching out into the player inventory
                 Bukkit.getScheduler().runTaskLater(InventoryRollback.getInstance(), () -> {
                     e.getWhoClicked().closeInventory();
-                    PaperLib.teleportAsync(staff, loc).thenAccept((result) -> {
+                    PaperLib.teleportAsync(staff,loc).thenAccept((result) -> {
                         if (SoundData.isTeleportEnabled())
                             staff.playSound(loc, SoundData.getTeleport(), 1, 1);
 

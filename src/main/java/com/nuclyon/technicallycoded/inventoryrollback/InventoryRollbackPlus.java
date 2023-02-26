@@ -33,7 +33,6 @@ public class InventoryRollbackPlus extends InventoryRollback {
     private EnumNmsVersion version = EnumNmsVersion.v1_13_R1;
 
     private AtomicBoolean shuttingDown = new AtomicBoolean(false);
-    private long startTime = System.currentTimeMillis();;
 
     public static InventoryRollbackPlus getInstance() {
         return instancePlus;

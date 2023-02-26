@@ -94,7 +94,8 @@ public class RestoreSubCmd extends IRPCommand {
                     }
                 }).exceptionally(
                         throwable -> {
-                            sender.sendMessage(MessageData.getPluginPrefix() + MessageData.getError());
+                            throwable.printStackTrace();
+                            sender.sendMessage(throwable.getMessage());
                             return null;
                         }
                 );
