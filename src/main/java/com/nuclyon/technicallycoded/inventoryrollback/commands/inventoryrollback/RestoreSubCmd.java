@@ -7,13 +7,17 @@ import me.danjono.inventoryrollback.config.ConfigData;
 import me.danjono.inventoryrollback.config.MessageData;
 import me.danjono.inventoryrollback.gui.menu.MainMenu;
 import me.danjono.inventoryrollback.gui.menu.PlayerMenu;
+import net.william278.husksync.api.HuskSyncAPI;
+import net.william278.husksync.player.User;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class RestoreSubCmd extends IRPCommand {
 
@@ -41,49 +45,64 @@ public class RestoreSubCmd extends IRPCommand {
 
     @SuppressWarnings("deprecation")
     private void openBackupMenu(CommandSender sender, Player staff, String[] args) {
-        if (args.length <= 0 || args.length == 1) {
-            try {
-                openMainMenu(staff);
-            } catch (NullPointerException ignored) {}
-        } else if(args.length == 2) {
-            OfflinePlayer rollbackPlayer;
-
-            String uuidStr = args[1];
-
-            // Handle input of UUID
-            if (uuidStr.length() == 36 || args[1].length() == 32) {
-
-                // Handle malformed UUID
-                if (args[1].length() == 32) {
-                    String oldUuidStr = uuidStr;
-                    uuidStr = oldUuidStr.substring(0, 8);
-                    uuidStr += "-";
-                    uuidStr += oldUuidStr.substring(8, 12);
-                    uuidStr += "-";
-                    uuidStr += oldUuidStr.substring(12, 16);
-                    uuidStr += "-";
-                    uuidStr += oldUuidStr.substring(16, 20);
-                    uuidStr += "-";
-                    uuidStr += oldUuidStr.substring(20);
-                }
-
+        CompletableFuture.runAsync(() -> {
+            if (args.length <= 1) {
                 try {
-                    rollbackPlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuidStr));
-                } catch (IllegalArgumentException e) {
-                    sender.sendMessage(MessageData.getPluginPrefix() + MessageData.getError());
-                    return;
-                }
-            } else {
-                // If not UUID length, assume it's a name
-                rollbackPlayer = Bukkit.getOfflinePlayer(args[1]);
-            }
+                    openMainMenu(staff);
+                } catch (NullPointerException ignored) {}
+            } else if(args.length == 2) {
 
-            try {
-                openPlayerMenu(staff, rollbackPlayer);
-            } catch (NullPointerException e) {}
-        } else {
-            sender.sendMessage(MessageData.getPluginPrefix() + MessageData.getError());
-        }
+                String uuidStr = args[1];
+
+                CompletableFuture<Optional<User>> optionalCompletableFuture;
+
+                // Handle input of UUID
+                if (uuidStr.length() == 36 || args[1].length() == 32) {
+
+                    // Handle malformed UUID
+                    if (args[1].length() == 32) {
+                        String oldUuidStr = uuidStr;
+                        uuidStr = oldUuidStr.substring(0, 8);
+                        uuidStr += "-";
+                        uuidStr += oldUuidStr.substring(8, 12);
+                        uuidStr += "-";
+                        uuidStr += oldUuidStr.substring(12, 16);
+                        uuidStr += "-";
+                        uuidStr += oldUuidStr.substring(16, 20);
+                        uuidStr += "-";
+                        uuidStr += oldUuidStr.substring(20);
+                    }
+
+                    try {
+                        optionalCompletableFuture = HuskSyncAPI.getInstance().getUser(UUID.fromString(uuidStr));
+                    } catch (IllegalArgumentException e) {
+                        sender.sendMessage(MessageData.getPluginPrefix() + MessageData.getError());
+                        return;
+                    }
+                } else {
+                    // If not UUID length, assume it's a name
+                    optionalCompletableFuture = HuskSyncAPI.getInstance().getUser(args[1]);
+                }
+
+                optionalCompletableFuture.thenAccept(optionalUser -> {
+                    if (optionalUser.isPresent()) {
+                        User user = optionalUser.get();
+                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(user.uuid);
+                        Bukkit.getScheduler().runTask(InventoryRollback.getInstance(), () -> openPlayerMenu(staff, offlinePlayer));
+                    } else {
+                        sender.sendMessage(MessageData.getPluginPrefix() + MessageData.getError());
+                    }
+                }).exceptionally(
+                        throwable -> {
+                            sender.sendMessage(MessageData.getPluginPrefix() + MessageData.getError());
+                            return null;
+                        }
+                );
+
+            } else {
+                sender.sendMessage(MessageData.getPluginPrefix() + MessageData.getError());
+            }
+        });
     }
 
     private void openMainMenu(Player staff) {
